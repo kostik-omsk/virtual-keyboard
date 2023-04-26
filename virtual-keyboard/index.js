@@ -417,10 +417,113 @@ const rowsKeyboard = [
   ],
 ];
 class Keyboard {
-  constructor() {
+  constructor(rows) {
+    this.rows = rows;
     this.element = null;
     this.textarea = null;
+    this.lang = localStorage.getItem('lang') || 'en';
+    this.initKeyboard();
+  }
+
+  createDom() {
+    const currentLang = this.lang;
+    const hiddenLang = this.lang === 'en' ? 'ru' : 'en';
+
+    this.element = document.createElement('div');
+    this.element.classList.add('container');
+
+    const title = document.createElement('h1');
+    title.classList.add('title');
+    title.innerHTML = 'RSS Виртуальная клавиатура';
+
+    this.textarea = document.createElement('textarea');
+    this.textarea.classList.add('textarea');
+    this.textarea.setAttribute('id', 'textarea');
+    this.textarea.setAttribute('rows', '10');
+    this.textarea.setAttribute('cols', '100');
+
+    const keyboard = document.createElement('div');
+    keyboard.classList.add('keyboard');
+    keyboard.setAttribute('id', 'keyboard');
+
+    this.rows.forEach((rowKeys) => {
+      const row = document.createElement('div');
+      row.classList.add('keyboard__row', 'row');
+      rowKeys.forEach((key) => {
+        const keyDiv = document.createElement('div');
+        keyDiv.classList.add('keyboard__key', 'key', key.code);
+
+        const currentLangSpan = document.createElement('span');
+        currentLangSpan.classList.add(currentLang);
+        currentLangSpan.insertAdjacentHTML(
+          'afterBegin',
+          `<span class="caseDown">${key[currentLang]}</span>`,
+        );
+        currentLangSpan.insertAdjacentHTML(
+          'beforeEnd',
+          `<span class="caseUp hidden">${key[`${currentLang}Shift`]}</span>`,
+        );
+        currentLangSpan.insertAdjacentHTML(
+          'beforeEnd',
+          `<span class="caps hidden">${key[`${currentLang}Caps`] || key[currentLang]}</span>`,
+        );
+        currentLangSpan.insertAdjacentHTML(
+          'beforeEnd',
+          `<span class="shiftCaps hidden">${
+            key[`${currentLang}Caps`] ? key[currentLang] : key[`${currentLang}Shift`]
+          }</span>`,
+        );
+
+        const hiddenLangSpan = document.createElement('span');
+        hiddenLangSpan.classList.add(hiddenLang, 'hidden');
+        hiddenLangSpan.insertAdjacentHTML(
+          'afterBegin',
+          `<span class="caseDown hidden">${key[hiddenLang]}</span>`,
+        );
+        hiddenLangSpan.insertAdjacentHTML(
+          'beforeEnd',
+          `<span class="caseUp hidden">${key[`${hiddenLang}Shift`]}</span>`,
+        );
+        hiddenLangSpan.insertAdjacentHTML(
+          'beforeEnd',
+          `<span class="caps hidden">${key[`${hiddenLang}Caps`] || key[hiddenLang]}</span>`,
+        );
+        hiddenLangSpan.insertAdjacentHTML(
+          'beforeEnd',
+          `<span class="shiftCaps hidden">${
+            key[`${hiddenLang}Caps`] ? key[hiddenLang] : key[`${hiddenLang}Shift`]
+          }</span>`,
+        );
+
+        keyDiv.appendChild(hiddenLangSpan);
+        keyDiv.appendChild(currentLangSpan);
+        // Добавление значения клавиши, если оно существует
+        if (key.value) {
+          keyDiv.innerText = key.value;
+          keyDiv.classList.add('control');
+        }
+        row.appendChild(keyDiv);
+      });
+      keyboard.appendChild(row);
+    });
+    const description = document.createElement('p');
+    description.innerText = 'Клавиатура создана в операционной системе Windows';
+    description.classList.add('description');
+
+    const language = document.createElement('p');
+    language.innerText = 'Для переключения языка комбинация: левыe ctrl + alt';
+    language.classList.add('language');
+
+    this.element.appendChild(title);
+    this.element.appendChild(this.textarea);
+    this.element.appendChild(keyboard);
+    this.element.appendChild(description);
+    this.element.appendChild(language);
+  }
+
+  initKeyboard() {
+    this.createDom();
   }
 }
-const keyboard = new Keyboard();
+const keyboard = new Keyboard(rowsKeyboard);
 document.body.append(keyboard.element);
