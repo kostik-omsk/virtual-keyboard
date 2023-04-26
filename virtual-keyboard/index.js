@@ -521,8 +521,46 @@ class Keyboard {
     this.element.appendChild(language);
   }
 
+  saveLangToLocalStorage() {
+    localStorage.setItem('lang', this.lang);
+  }
+
+  toggleLang() {
+    const keyboardKeys = document.querySelectorAll('.keyboard__key');
+    keyboardKeys.forEach((key) => {
+      if (!key.classList.contains('control')) {
+        const currentLangSpan = key.querySelector(`.${this.lang}`);
+        const hiddenLangSpan = key.querySelector(`.${this.lang === 'en' ? 'ru' : 'en'}`);
+        currentLangSpan.classList.toggle('hidden');
+        if (this.pressCaps) {
+          currentLangSpan.children[2].classList.toggle('hidden');
+        } else {
+          currentLangSpan.children[0].classList.toggle('hidden');
+        }
+        hiddenLangSpan.classList.toggle('hidden');
+        if (this.pressCaps) {
+          hiddenLangSpan.children[2].classList.toggle('hidden');
+        } else {
+          hiddenLangSpan.children[0].classList.toggle('hidden');
+        }
+      }
+    });
+  }
+
+  keyDown(event) {
+    event.preventDefault();
+
+    if (event.ctrlKey && event.altKey) {
+      localStorage.setItem('lang', localStorage.getItem('lang') === 'en' ? 'ru' : 'en');
+      this.lang = localStorage.getItem('lang');
+      this.toggleLang();
+    }
+  }
+
   initKeyboard() {
     this.createDom();
+    this.saveLangToLocalStorage();
+    document.addEventListener('keydown', this.keyDown.bind(this));
   }
 }
 const keyboard = new Keyboard(rowsKeyboard);
