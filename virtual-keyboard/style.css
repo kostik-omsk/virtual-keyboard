@@ -1,9 +1,139 @@
 body {
-  background-color: rgb(27, 63, 63);
+  background-color: #2b5666;
   margin: 0 auto;
+  font-family: 'Oswald', sans-serif;
 }
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.title {
+  margin-bottom: 10px;
+  color: aliceblue;
+  letter-spacing: 0.8px;
+}
+
+.textarea {
+  width: 721px;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  padding: 10px 15px;
+  background-color: #2c2c2c;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+.keyboard {
+  width: 734px;
+  margin: 20px auto;
+  padding: 10px;
+  padding-left: 6px;
+  background: #2c2c2c;
+  border: 2px solid #222222;
+  border-radius: 10px;
+  box-shadow: 0 0 0.1rem #fff, 0 0 0.2rem #fff, 0 0 0.3rem #c9f8fe, 0 0 0.8rem #c9f8fe,
+    0 0 1rem #c9f8fe;
+}
+
+.keyboard .row {
+  clear: both;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 8px;
+}
+
+.keyboard .key {
+  float: left;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #000000;
+  margin-left: 6px;
+  font-weight: 500;
+  line-height: 40px;
+  text-align: center;
+  color: #ffffff;
+  background: #555555;
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+  transition: border-radius 0.3s, background-color 0.3s;
+}
+
+.keyboard .key:hover {
+  background: #2b5666;
+  border: 1px solid #ffffff;
+}
+
+.keyboard .key.active {
+  background: #2b5666;
+  box-shadow: 0 0 0.1rem #fff, 0 0 0.2rem #fff, 0 0 0.3rem #c9f8fe, 0 0 0.4rem #c9f8fe,
+    0 0 0.5rem #c9f8fe;
+  animation: myAnim 0.5s ease 0s 1 normal forwards;
+}
+
+@keyframes myAnim {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.8);
+  }
+}
+
+.keyboard .AltLeft,
+.keyboard .AltRight,
+.keyboard .ArrowUp,
+.keyboard .ArrowLeft,
+.keyboard .ArrowDown,
+.keyboard .ArrowRight,
+.keyboard .Backspace,
+.keyboard .CapsLock,
+.keyboard .ControlLeft,
+.keyboard .ControlRight,
+.keyboard .Delete,
+.keyboard .Enter,
+.keyboard .ShiftLeft,
+.keyboard .ShiftRight,
+.keyboard .Tab,
+.keyboard .MetaLeft {
+  font-weight: 400;
+  background-color: #222222;
+  letter-spacing: 0.8px;
+}
+
+.keyboard .Tab {
+  width: 50px;
+}
+
+.keyboard .Backspace,
+.keyboard .CapsLock,
+.keyboard .ShiftLeft {
+  width: 102px;
+}
+
+.keyboard .Delete {
+  width: 44px;
+}
+
+.keyboard .Enter,
+.keyboard .ShiftRight {
+  width: 88px;
+}
+
+.keyboard .Space {
+  width: 342px;
+}
+.hidden {
+  display: none;
+}
+.description,
+.language {
+  color: white;
+  letter-spacing: 0.8px;
+  margin-top: 5px;
 }
