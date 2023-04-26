@@ -72,7 +72,7 @@ body {
   background: #2b5666;
   box-shadow: 0 0 0.1rem #fff, 0 0 0.2rem #fff, 0 0 0.3rem #c9f8fe, 0 0 0.4rem #c9f8fe,
     0 0 0.5rem #c9f8fe;
-  animation: myAnim 0.5s ease 0s 1 normal forwards;
+  animation: myAnim 0.4s ease 0s 1 normal forwards;
 }
 
 @keyframes myAnim {
@@ -81,7 +81,7 @@ body {
   }
 
   100% {
-    transform: scale(0.8);
+    transform: scale(0.95);
   }
 }
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const rowsKeyboard = [
   [
     {
@@ -549,11 +548,29 @@ class Keyboard {
 
   keyDown(event) {
     event.preventDefault();
+    const key = document.querySelector(`.${event.code}`);
+    if (key) {
+      key.classList.add('active');
+      if (event.ctrlKey && event.altKey) {
+        localStorage.setItem('lang', localStorage.getItem('lang') === 'en' ? 'ru' : 'en');
+        this.lang = localStorage.getItem('lang');
+        this.toggleLang();
+      }
+    }
+  }
 
-    if (event.ctrlKey && event.altKey) {
-      localStorage.setItem('lang', localStorage.getItem('lang') === 'en' ? 'ru' : 'en');
-      this.lang = localStorage.getItem('lang');
-      this.toggleLang();
+  keyUp(event) {
+    const key = document.querySelector(`.${event.code}`);
+    if (key) {
+      if (key.classList.contains('CapsLock')) {
+        if (this.pressCaps) {
+          key.classList.add('active');
+        } else {
+          key.classList.remove('active');
+        }
+      } else {
+        key.classList.remove('active');
+      }
     }
   }
 
@@ -561,6 +578,7 @@ class Keyboard {
     this.createDom();
     this.saveLangToLocalStorage();
     document.addEventListener('keydown', this.keyDown.bind(this));
+    document.addEventListener('keyup', this.keyUp.bind(this));
   }
 }
 const keyboard = new Keyboard(rowsKeyboard);
