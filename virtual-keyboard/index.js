@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const rowsKeyboard = [
   [
     {
@@ -415,3 +416,11 @@ const rowsKeyboard = [
     { code: 'ControlRight', value: 'Ctrl' },
   ],
 ];
+class Keyboard {
+  constructor() {
+    this.element = null;
+    this.textarea = null;
+  }
+}
+const keyboard = new Keyboard();
+document.body.append(keyboard.element);
