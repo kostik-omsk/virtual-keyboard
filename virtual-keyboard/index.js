@@ -421,6 +421,8 @@ class Keyboard {
     this.element = null;
     this.textarea = null;
     this.lang = localStorage.getItem('lang') || 'en';
+    this.pressCaps = false;
+    this.pressShift = false;
     this.initKeyboard();
   }
 
@@ -546,11 +548,44 @@ class Keyboard {
     });
   }
 
+  toggleCase() {
+    const elements = document.querySelectorAll(`div>.${this.lang}`);
+    const capsShift = this.pressCaps && this.pressShift ? 1 : 0;
+    elements.forEach((element) => {
+      const [caseDown, caseUp, caps, shiftCaps] = element.querySelectorAll('span');
+      caseDown.classList.add('hidden');
+      caseUp.classList.add('hidden');
+      caps.classList.add('hidden');
+      shiftCaps.classList.add('hidden');
+      if (capsShift === 1) {
+        shiftCaps.classList.remove('hidden');
+        return;
+      }
+      if (this.pressCaps) {
+        caps.classList.remove('hidden');
+        return;
+      }
+      if (this.pressShift) {
+        caseUp.classList.remove('hidden');
+        return;
+      }
+      caseDown.classList.remove('hidden');
+    });
+  }
+
   keyDown(event) {
     event.preventDefault();
     const key = document.querySelector(`.${event.code}`);
     if (key) {
       key.classList.add('active');
+      if (key.classList.contains('CapsLock')) {
+        this.pressCaps = !this.pressCaps;
+        this.toggleCase();
+      }
+      if (event.shiftKey && !this.pressShift) {
+        this.pressShift = true;
+        this.toggleCase();
+      }
       if (event.ctrlKey && event.altKey) {
         localStorage.setItem('lang', localStorage.getItem('lang') === 'en' ? 'ru' : 'en');
         this.lang = localStorage.getItem('lang');
@@ -570,6 +605,10 @@ class Keyboard {
         }
       } else {
         key.classList.remove('active');
+      }
+      if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+        this.pressShift = false;
+        this.toggleCase();
       }
     }
   }
