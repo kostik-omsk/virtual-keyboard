@@ -573,11 +573,62 @@ class Keyboard {
     });
   }
 
+  outKey(key) {
+    const index = this.textarea.selectionStart;
+    const taVal = this.textarea.value;
+    this.textarea.focus();
+    if (key.classList.contains('control')) {
+      switch (key.innerHTML) {
+        case 'Enter':
+          this.textarea.value = `${taVal.slice(0, index)}\n${taVal.slice(index)}`;
+          this.textarea.setSelectionRange(index + 1, index + 1);
+          break;
+        case 'Backspace':
+          if (index > 0) {
+            this.textarea.value = `${taVal.slice(0, index - 1)}${taVal.slice(index)}`;
+            this.textarea.setSelectionRange(index - 1, index - 1);
+          }
+          break;
+        case 'Del':
+          this.textarea.value = `${taVal.slice(0, index)}${taVal.slice(index + 1)}`;
+          this.textarea.setSelectionRange(index, index);
+          break;
+        case ' ':
+          this.textarea.value = `${taVal.slice(0, index)} ${taVal.slice(index)}`;
+          this.textarea.setSelectionRange(index + 1, index + 1);
+          break;
+        case 'Tab':
+          this.textarea.value = `${taVal.slice(0, index)}    ${taVal.slice(index)}`;
+          this.textarea.setSelectionRange(index + 4, index + 4);
+          break;
+        case '◄':
+          this.textarea.value += '◄';
+          break;
+        case '►':
+          this.textarea.value += '►';
+          break;
+        case '▼':
+          this.textarea.value += '▼';
+          break;
+        case '▲':
+          this.textarea.value += '▲';
+          break;
+        default:
+          break;
+      }
+    } else {
+      const elements = key.querySelectorAll(':not(.hidden)');
+      const symbol = elements.length === 2 ? elements[1].innerHTML : key.innerHTML;
+      this.textarea.value += symbol;
+    }
+  }
+
   keyDown(event) {
     event.preventDefault();
     const key = document.querySelector(`.${event.code}`);
     if (key) {
       key.classList.add('active');
+      this.outKey(key);
       if (key.classList.contains('CapsLock')) {
         this.pressCaps = !this.pressCaps;
         this.toggleCase();
