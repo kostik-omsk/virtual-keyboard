@@ -664,11 +664,53 @@ class Keyboard {
     }
   }
 
+  mouseDown(event) {
+    const key = event.target.closest('.keyboard__key');
+    if (key) {
+      key.classList.add('active');
+      this.outKey(key);
+      if (key.classList.contains('CapsLock')) {
+        this.pressCaps = !this.pressCaps;
+        this.toggleCase();
+      }
+      if (key.innerHTML === 'Shift' && !this.pressShift) {
+        this.pressShift = true;
+        this.toggleCase();
+      }
+    }
+  }
+
+  mouseUp(event) {
+    this.textarea.focus();
+    const keys = document.querySelectorAll('.active');
+    keys.forEach((key) => {
+      if (key.innerHTML !== 'CapsLock' && key.innerHTML !== 'Shift') key.classList.remove('active');
+    });
+    const key = event.target.closest('.keyboard__key');
+    if (key) {
+      if (key.classList.contains('CapsLock')) {
+        if (this.pressCaps) {
+          key.classList.add('active');
+        } else {
+          key.classList.remove('active');
+        }
+      } else {
+        key.classList.remove('active');
+      }
+      if (key.innerHTML === 'Shift') {
+        this.pressShift = false;
+        this.toggleCase();
+      }
+    }
+  }
+
   initKeyboard() {
     this.createDom();
     this.saveLangToLocalStorage();
-    document.addEventListener('keydown', this.keyDown.bind(this));
     document.addEventListener('keyup', this.keyUp.bind(this));
+    document.addEventListener('keydown', this.keyDown.bind(this));
+    document.addEventListener('mouseup', this.mouseUp.bind(this));
+    this.element.addEventListener('mousedown', this.mouseDown.bind(this));
   }
 }
 const keyboard = new Keyboard(rowsKeyboard);

@@ -1,7 +1,8 @@
 {
   "extends": "airbnb-base",
-  "rules": {
-    // здесь можно определить свои правила для проекта
-    "linebreak-style": ["error", "windows"]
+  "rules": {},
+  "env": {
+    "browser": true,
+    "es6": true
   }
 }
